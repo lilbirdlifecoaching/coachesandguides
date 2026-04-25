@@ -337,6 +337,55 @@
     border: 1px solid #bdd6bf;
   }
 
+  /* Availability badge */
+  .avail-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.72rem;
+    padding: 0.18rem 0.6rem;
+    border-radius: 12px;
+    font-weight: 500;
+    margin-bottom: 0.6rem;
+  }
+  .avail-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
+  .avail-open { background: #edf5ee; color: #2e5e36; border: 1px solid #bdd6bf; }
+  .avail-open::before { background: #3a7a45; }
+  .avail-limited { background: #fef7e8; color: #7a5a0f; border: 1px solid #e8d5a0; }
+  .avail-limited::before { background: #c4933f; }
+  .avail-waitlist { background: #f0ece3; color: #6b6560; border: 1px solid #cfc9ba; }
+  .avail-waitlist::before { background: #9b8f80; }
+  .avail-closed { background: #fdf0ee; color: #7a3a28; border: 1px solid #e8c4b8; }
+  .avail-closed::before { background: #c96b42; }
+
+  /* Featured card */
+  .coach-card.featured { border-color: var(--gold); border-width: 2px; }
+  .featured-badge { position: absolute; top: 0.75rem; left: 0.75rem; background: var(--gold); color: white; font-size: 0.7rem; font-weight: 500; padding: 0.2rem 0.6rem; border-radius: 10px; font-family: 'DM Sans', sans-serif; z-index: 2; }
+
+  /* Join the network CTA */
+  .join-cta {
+    background: var(--ink);
+    border-radius: 16px;
+    padding: 2.5rem;
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  .join-cta h3 { font-family: 'Fraunces', serif; font-size: 1.5rem; font-weight: 300; color: var(--paper); margin-bottom: 0.5rem; }
+  .join-cta h3 em { font-style: italic; color: var(--gold); }
+  .join-cta p { font-size: 0.9rem; color: var(--warm-border); font-weight: 300; margin-bottom: 1.5rem; }
+  .join-cta a { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--gold); color: white; text-decoration: none; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 500; padding: 0.75rem 2rem; border-radius: 30px; transition: all 0.2s; }
+  .join-cta a:hover { background: var(--ember); transform: translateY(-1px); }
+
+  /* Location on card */
+  .card-location { font-size: 0.78rem; color: var(--ink-muted); margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.3rem; }
+
+  /* Modal booking button */
+  .modal-book-btn { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--gold); color: white; text-decoration: none; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 500; padding: 0.65rem 1.5rem; border-radius: 30px; transition: all 0.2s; margin-top: 1.5rem; }
+  .modal-book-btn:hover { background: var(--ember); }
+  .modal-links { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1rem; }
+  .modal-link { font-size: 0.83rem; color: var(--gold); text-decoration: none; display: flex; align-items: center; gap: 0.3rem; }
+  .modal-link:hover { color: var(--ember); }
+
   /* ── EMPTY STATE ── */
   .empty-state {
     text-align: center;
@@ -618,6 +667,13 @@
 
   <div class="results-meta" id="resultsMeta"></div>
 
+  <!-- JOIN CTA -->
+  <div class="join-cta">
+    <h3>are you a coach or <em>guide</em>?</h3>
+    <p>Join the network and get in front of the people who need exactly what you offer.</p>
+    <a href="https://coachesandguides.network">apply to join &rarr;</a>
+  </div>
+
   <!-- GRID -->
   <div class="coach-grid" id="coachGrid"></div>
 </div>
@@ -638,50 +694,7 @@
 <script>
 // ── CONFIG ──
 // Paste your deployed Apps Script URL here (same URL goes in the intake form)
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxWrkxrafJblbq1_59ObMzl83rVbpRjUSiTMA5InjmpJYI260fFstR4gnKc5IVenU1InA/exec';
-
-// Placeholder coaches shown while loading or if Sheet isn't connected yet
-const PLACEHOLDER_COACHES = [
-  {
-    id: 'p1',
-    name: "Sarah Okonkwo",
-    title: "Life Coach & Spiritual Director",
-    initials: "SO",
-    modalityTags: ["life coach", "spiritual direction"],
-    interestTags: ["women's", "mom life", "midlife", "ministry"],
-    bio: "Sarah has spent fifteen years walking with women in the middle of it — the big transitions, the quiet losses, the seasons that don't have a name yet. She's warm, perceptive, and will ask the one question you weren't expecting.",
-    approach: "Her sessions blend reflective listening, spiritual practice, and a gentle kind of honesty that helps clients find their own footing. She draws from the Ignatian tradition and narrative coaching.",
-    goodFor: ["Women navigating faith and doubt", "Moms losing themselves in the role", "Midlife reckoning and renewal", "Anyone who needs permission to slow down"],
-    background: "M.Div, certified life coach, 12 years in ministry formation",
-    photoDataUrl: ''
-  },
-  {
-    id: 'p2',
-    name: "Marcus Tetteh",
-    title: "Executive & Leadership Coach",
-    initials: "MT",
-    modalityTags: ["executive", "leadership", "group facilitation"],
-    interestTags: ["tech", "entrepreneurship", "men's", "career transition"],
-    bio: "Marcus is the coach you hire when you're succeeding by every external metric but something still feels off. He works primarily with founders, team leads, and executives in high-growth environments.",
-    approach: "Direct, strategic, and surprisingly good at uncovering emotional intelligence gaps without making it feel like therapy. He uses 5 Voices frameworks and a sharp systems-thinking lens.",
-    goodFor: ["Post-Series A/B founders", "Tech leads becoming people managers", "Men who lead well at work but struggle at home", "Anyone building an organisation and themselves simultaneously"],
-    background: "15 years in organizational development, GiANT Worldwide certified, MBA",
-    photoDataUrl: ''
-  },
-  {
-    id: 'p3',
-    name: "Priya Menon",
-    title: "Somatic Coach & Therapist",
-    initials: "PM",
-    modalityTags: ["somatic", "therapeutic"],
-    interestTags: ["women's", "healthcare", "young adults", "career transition"],
-    bio: "Priya brings the body into the conversation. If you've done the therapy, read the books, and still feel stuck — she works with the part of you that hasn't caught up yet.",
-    approach: "Body-based practices, nervous system regulation, and somatic inquiry. She's particularly gifted at working with people who intellectualise everything (yes, she can tell).",
-    goodFor: ["Burnout and chronic overwhelm", "High-achievers whose body is saying no", "Women in healthcare and helping professions", "People who've tried everything else"],
-    background: "Licensed therapist, somatic experiencing practitioner, 10 years clinical experience",
-    photoDataUrl: ''
-  }
-];
+const APPS_SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
 
 let coaches = [];
 
@@ -712,23 +725,32 @@ function renderGrid() {
     return;
   }
 
-  grid.innerHTML = filtered.map(c => `
-    <div class="coach-card" data-id="${c.id}">
+  grid.innerHTML = filtered.map((c, idx) => {
+    const availClass = c.availability === 'Taking new clients' ? 'avail-open'
+      : c.availability === 'Limited availability' ? 'avail-limited'
+      : c.availability === 'Waitlist only' ? 'avail-waitlist'
+      : c.availability === 'Not currently taking clients' ? 'avail-closed' : '';
+    const isFeatured = idx === 0 && activeFilters.size === 0 && !searchQuery;
+    return `
+    <div class="coach-card${isFeatured ? ' featured' : ''}" data-id="${c.id}">
+      ${isFeatured ? '<span class="featured-badge">featured</span>' : ''}
       <div class="photo-wrap">
         ${c.photoDataUrl
           ? `<img src="${c.photoDataUrl}" alt="${c.name}" />`
           : `<div class="photo-placeholder">${c.initials}</div>`}
       </div>
       <div class="card-body">
+        ${availClass ? `<span class="avail-badge ${availClass}">${c.availability}</span>` : ''}
         <h3>${c.name}</h3>
         <p class="title">${c.title}</p>
+        ${c.location ? `<p class="card-location"><svg width="10" height="12" viewBox="0 0 10 12" fill="none"><path d="M5 0C2.24 0 0 2.24 0 5c0 3.75 5 7 5 7s5-3.25 5-7c0-2.76-2.24-5-5-5zm0 6.5A1.5 1.5 0 1 1 5 3.5a1.5 1.5 0 0 1 0 3z" fill="currentColor" opacity="0.45"/></svg>${c.location}</p>` : ''}
         <div class="card-tags">
           ${c.modalityTags.map(t => `<span class="card-tag tag-modality">${t}</span>`).join('')}
-          ${c.interestTags.slice(0,2).map(t => `<span class="card-tag tag-interest">${t}</span>`).join('')}
+          ${c.interestTags.map(t => `<span class="card-tag tag-interest">${t}</span>`).join('')}
         </div>
       </div>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
 
   grid.querySelectorAll('.coach-card').forEach(card => {
     card.addEventListener('click', () => {
@@ -749,10 +771,16 @@ function openModal(coach) {
   body.innerHTML = `
     <h2>${coach.name}</h2>
     <p class="modal-title">${coach.title}</p>
+    ${coach.location ? `<p style="font-size:0.85rem;color:var(--ink-muted);margin-bottom:0.5rem">${coach.location}${coach.timezone ? ' · ' + coach.timezone : ''}</p>` : ''}
     <div class="modal-tags">
       ${coach.modalityTags.map(t => `<span class="card-tag tag-modality">${t}</span>`).join('')}
       ${coach.interestTags.map(t => `<span class="card-tag tag-interest">${t}</span>`).join('')}
     </div>
+    ${coach.availability ? `<div style="margin:0.5rem 0"><span class="avail-badge ${
+      coach.availability === 'Taking new clients' ? 'avail-open'
+      : coach.availability === 'Limited availability' ? 'avail-limited'
+      : coach.availability === 'Waitlist only' ? 'avail-waitlist' : 'avail-closed'
+    }">${coach.availability}</span></div>` : ''}
     <div class="modal-section">
       <h4>who they are</h4>
       <p>${coach.bio}</p>
@@ -762,15 +790,24 @@ function openModal(coach) {
       <h4>how they work</h4>
       <p>${coach.approach}</p>
     </div>
+    ${coach.different ? `<hr class="modal-divider"><div class="modal-section"><h4>what makes them different</h4><p>${coach.different}</p></div>` : ''}
     <hr class="modal-divider">
     <div class="modal-section">
       <h4>a good fit if...</h4>
-      <ul>${coach.goodFor.map(item => `<li>${item}</li>`).join('')}</ul>
+      <ul>${Array.isArray(coach.goodFor) ? coach.goodFor.map(item => `<li>${item}</li>`).join('') : `<li>${coach.goodFor}</li>`}</ul>
     </div>
     <hr class="modal-divider">
     <div class="modal-section">
       <h4>background</h4>
-      <p>${coach.background}</p>
+      <p>${coach.background || '—'}</p>
+      ${coach.experience ? `<p style="margin-top:0.4rem;font-size:0.85rem;color:var(--ink-muted)">${coach.experience} experience${coach.pricing && coach.pricing !== 'Prefer not to say' ? ' · ' + coach.pricing : ''}</p>` : ''}
+      ${coach.languages ? `<p style="margin-top:0.4rem;font-size:0.85rem;color:var(--ink-muted)">Languages: ${coach.languages}</p>` : ''}
+    </div>
+    ${coach.bookingLink ? `<a href="${coach.bookingLink}" target="_blank" class="modal-book-btn">Book a session &rarr;</a>` : ''}
+    <div class="modal-links">
+      ${coach.website ? `<a href="${coach.website}" target="_blank" class="modal-link">website &rarr;</a>` : ''}
+      ${coach.linkedin ? `<a href="${coach.linkedin}" target="_blank" class="modal-link">LinkedIn &rarr;</a>` : ''}
+      ${coach.instagram ? `<a href="${coach.instagram}" target="_blank" class="modal-link">Instagram &rarr;</a>` : ''}
     </div>
   `;
 
@@ -821,24 +858,24 @@ async function loadCoaches() {
   const grid = document.getElementById('coachGrid');
   const meta = document.getElementById('resultsMeta');
 
-  // Show placeholders while loading
-  coaches = PLACEHOLDER_COACHES;
-  renderGrid();
+  meta.textContent = 'loading guides...';
+  grid.innerHTML = '';
 
-  if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') return;
+  if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
+    meta.textContent = 'connect your Google Sheet to see guides here';
+    return;
+  }
 
   try {
-    meta.textContent = 'loading guides...';
     const res = await fetch(APPS_SCRIPT_URL);
     const live = await res.json();
-    if (Array.isArray(live) && live.length > 0) {
+    if (Array.isArray(live)) {
       coaches = live;
       renderGrid();
     }
   } catch (err) {
-    // Falls back to placeholders silently
-    console.warn('Could not load from Sheet, showing placeholders:', err);
-    renderGrid();
+    meta.textContent = 'having trouble loading — please refresh';
+    console.warn('Could not load from Sheet:', err);
   }
 }
 
