@@ -732,7 +732,7 @@ function renderGrid() {
       : c.availability === 'Not currently taking clients' ? 'avail-closed' : '';
     const isFeatured = idx === 0 && activeFilters.size === 0 && !searchQuery;
     return `
-    <div class="coach-card${isFeatured ? ' featured' : ''}" data-id="${c.id}">
+    <div class="coach-card${isFeatured ? ' featured' : ''}" data-index="${idx}">
       ${isFeatured ? '<span class="featured-badge">featured</span>' : ''}
       <div class="photo-wrap">
         ${c.photoDataUrl
@@ -754,7 +754,7 @@ function renderGrid() {
 
   grid.querySelectorAll('.coach-card').forEach(card => {
     card.addEventListener('click', () => {
-      const coach = coaches.find(c => c.id === parseInt(card.dataset.id));
+      const coach = filtered[parseInt(card.dataset.index)];
       openModal(coach);
     });
   });
@@ -861,7 +861,7 @@ async function loadCoaches() {
   meta.textContent = 'loading guides...';
   grid.innerHTML = '';
 
-  if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbxWrkxrafJblbq1_59ObMzl83rVbpRjUSiTMA5InjmpJYI260fFstR4gnKc5IVenU1InA/exec') {
+  if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
     meta.textContent = 'connect your Google Sheet to see guides here';
     return;
   }
