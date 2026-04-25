@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Find Your Guide — Orangery & lil' bird</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Caveat:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1e1d1b;
+    --paper: #f7f4ee;
+    --warm-mid: #e8e3d8;
+    --warm-border: #cfc9ba;
+    --gold: #c4933f;
+    --gold-light: #f0e3c8;
+    --ember: #c96b42;
+    --sage: #6b8c72;
+    --slate: #4a5568;
+    --ink-muted: #6b6560;
+    --tag-bg: #f0ece3;
+    --tag-border: #d4ccba;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* Subtle grain */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.6;
+  }
+
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  /* ── HEADER ── */
+  header {
+    padding: 3.5rem 0 2rem;
+    text-align: center;
+    position: relative;
+  }
+
+  .brand-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    font-family: 'Caveat', cursive;
+    font-size: 1rem;
+    color: var(--ink-muted);
+    letter-spacing: 0.03em;
+  }
+
+  .brand-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--warm-border);
+  }
+
+  .brand-link {
+    color: var(--ink-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .brand-link:hover { color: var(--gold); }
+
+  header h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    font-weight: 300;
+    line-height: 1.15;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    margin-bottom: 0.75rem;
+  }
+
+  header h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  header p.sub {
+    font-size: 1.05rem;
+    color: var(--ink-muted);
+    font-weight: 300;
+    max-width: 480px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.6;
+  }
+
+  /* Decorative hand-drawn underline */
+  .underline-draw {
+    display: inline-block;
+    position: relative;
+  }
+  .underline-draw::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: -4px;
+    right: -4px;
+    height: 8px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 8'%3E%3Cpath d='M2,6 Q30,1 60,5 Q90,9 120,4 Q150,0 180,5 Q190,6 198,4' stroke='%23c4933f' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+  }
+
+  /* ── SEARCH & FILTERS ── */
+  .filters-section {
+    background: white;
+    border: 1px solid var(--warm-border);
+    border-radius: 16px;
+    padding: 1.75rem 2rem;
+    margin-bottom: 2.5rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+
+  .search-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: var(--paper);
+    border: 1.5px solid var(--warm-border);
+    border-radius: 40px;
+    padding: 0.65rem 1.25rem;
+    margin-bottom: 1.5rem;
+    transition: border-color 0.2s;
+  }
+  .search-bar:focus-within { border-color: var(--gold); }
+
+  .search-bar svg { flex-shrink: 0; opacity: 0.45; }
+
+  .search-bar input {
+    border: none;
+    background: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    color: var(--ink);
+    width: 100%;
+    outline: none;
+  }
+  .search-bar input::placeholder { color: var(--ink-muted); }
+
+  .filter-group {
+    margin-bottom: 1.25rem;
+  }
+  .filter-group:last-child { margin-bottom: 0; }
+
+  .filter-label {
+    font-family: 'Caveat', cursive;
+    font-size: 1rem;
+    color: var(--ink-muted);
+    margin-bottom: 0.6rem;
+    display: block;
+  }
+
+  .tags-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.3rem 0.85rem;
+    border-radius: 20px;
+    border: 1.5px solid var(--tag-border);
+    background: var(--tag-bg);
+    font-size: 0.82rem;
+    color: var(--ink-muted);
+    cursor: pointer;
+    transition: all 0.18s;
+    user-select: none;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+  }
+
+  .tag:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: var(--gold-light);
+  }
+
+  .tag.active {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--paper);
+  }
+
+  .tag.active:hover {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: white;
+  }
+
+  .clear-btn {
+    font-family: 'Caveat', cursive;
+    font-size: 0.95rem;
+    color: var(--ink-muted);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.3rem 0;
+    margin-top: 0.75rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: color 0.2s;
+  }
+  .clear-btn:hover { color: var(--ember); }
+
+  /* ── RESULTS COUNT ── */
+  .results-meta {
+    font-family: 'Caveat', cursive;
+    font-size: 1.1rem;
+    color: var(--ink-muted);
+    margin-bottom: 1.5rem;
+  }
+
+  /* ── COACH GRID ── */
+  .coach-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.75rem;
+    margin-bottom: 5rem;
+  }
+
+  .coach-card {
+    background: white;
+    border: 1px solid var(--warm-border);
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.22s ease;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+    position: relative;
+  }
+
+  .coach-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.1);
+    border-color: var(--gold);
+  }
+
+  .coach-card .photo-wrap {
+    width: 100%;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    position: relative;
+    background: var(--warm-mid);
+  }
+
+  .coach-card .photo-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .coach-card:hover .photo-wrap img {
+    transform: scale(1.04);
+  }
+
+  .coach-card .photo-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fraunces', serif;
+    font-size: 3rem;
+    font-weight: 300;
+    color: var(--warm-border);
+  }
+
+  .coach-card .card-body {
+    padding: 1.2rem 1.3rem 1.3rem;
+  }
+
+  .coach-card h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 0.15rem;
+  }
+
+  .coach-card .title {
+    font-size: 0.82rem;
+    color: var(--ink-muted);
+    margin-bottom: 0.9rem;
+    font-weight: 300;
+  }
+
+  .coach-card .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .coach-card .card-tag {
+    font-size: 0.74rem;
+    padding: 0.18rem 0.6rem;
+    border-radius: 12px;
+    font-weight: 400;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .tag-modality {
+    background: #edf0f7;
+    color: #3a4a7a;
+    border: 1px solid #c8d0e8;
+  }
+
+  .tag-interest {
+    background: #edf5ee;
+    color: #2e5e36;
+    border: 1px solid #bdd6bf;
+  }
+
+  /* ── EMPTY STATE ── */
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--ink-muted);
+    grid-column: 1 / -1;
+  }
+  .empty-state p.big {
+    font-family: 'Fraunces', serif;
+    font-size: 1.5rem;
+    font-weight: 300;
+    font-style: italic;
+    margin-bottom: 0.5rem;
+  }
+  .empty-state p.small { font-size: 0.9rem; }
+
+  /* ── MODAL ── */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(30, 28, 25, 0.6);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s;
+    backdrop-filter: blur(3px);
+  }
+
+  .modal-backdrop.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .modal {
+    background: var(--paper);
+    border: 1px solid var(--warm-border);
+    border-radius: 20px;
+    max-width: 680px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    transform: translateY(20px) scale(0.97);
+    transition: transform 0.25s ease;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.18);
+  }
+
+  .modal-backdrop.open .modal {
+    transform: translateY(0) scale(1);
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1.5px solid var(--warm-border);
+    background: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.18s;
+    z-index: 10;
+  }
+  .modal-close:hover { border-color: var(--ember); background: #fdf2ee; }
+  .modal-close svg { pointer-events: none; }
+
+  .modal-hero {
+    width: 100%;
+    aspect-ratio: 16/7;
+    overflow: hidden;
+    border-radius: 20px 20px 0 0;
+    position: relative;
+    background: var(--warm-mid);
+  }
+
+  .modal-hero img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .modal-hero .hero-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fraunces', serif;
+    font-size: 5rem;
+    color: var(--warm-border);
+  }
+
+  .modal-body {
+    padding: 2rem 2.5rem 2.5rem;
+  }
+
+  .modal-body h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 2rem;
+    font-weight: 300;
+    color: var(--ink);
+    margin-bottom: 0.25rem;
+  }
+
+  .modal-body .modal-title {
+    font-size: 0.9rem;
+    color: var(--ink-muted);
+    font-weight: 300;
+    margin-bottom: 1.25rem;
+  }
+
+  .modal-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .modal-tags .card-tag { font-size: 0.8rem; padding: 0.25rem 0.75rem; }
+
+  .modal-section {
+    margin-bottom: 1.5rem;
+  }
+
+  .modal-section h4 {
+    font-family: 'Caveat', cursive;
+    font-size: 1.1rem;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+
+  .modal-section p {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--slate);
+    font-weight: 300;
+  }
+
+  .modal-section ul {
+    padding-left: 1.2rem;
+  }
+
+  .modal-section ul li {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--slate);
+    margin-bottom: 0.25rem;
+    font-weight: 300;
+  }
+
+  .modal-divider {
+    border: none;
+    border-top: 1px dashed var(--warm-border);
+    margin: 1.75rem 0;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 2rem;
+    font-family: 'Caveat', cursive;
+    font-size: 0.95rem;
+    color: var(--warm-border);
+    position: relative;
+    z-index: 1;
+  }
+
+  @media (max-width: 600px) {
+    .wrapper { padding: 0 1rem; }
+    .modal-body { padding: 1.5rem 1.5rem 2rem; }
+    .coach-grid { grid-template-columns: 1fr; }
+    .filters-section { padding: 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+  <header>
+    <div class="brand-row">
+      powering <a href="https://lilbird.life" class="brand-link">lil' bird</a>
+      <div class="brand-dot"></div>
+      <a href="https://orangery.solutions" class="brand-link">orangery.solutions</a>
+    </div>
+    <h1>find your <em><span class="underline-draw">guide</span></em></h1>
+    <p class="sub">Real people. Honest conversations. The kind of coaching that actually changes something.</p>
+  </header>
+
+  <!-- FILTERS -->
+  <div class="filters-section">
+    <div class="search-bar">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="7" cy="7" r="5" stroke="#6b6560" stroke-width="1.5"/>
+        <path d="M11 11L14 14" stroke="#6b6560" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <input type="text" id="searchInput" placeholder="Search by name or keyword..." />
+    </div>
+
+    <div class="filter-group">
+      <span class="filter-label">type of work</span>
+      <div class="tags-row" id="modalityTags">
+        <span class="tag" data-type="modality" data-value="life coach">life coach</span>
+        <span class="tag" data-type="modality" data-value="spiritual direction">spiritual direction</span>
+        <span class="tag" data-type="modality" data-value="therapeutic">therapeutic</span>
+        <span class="tag" data-type="modality" data-value="somatic">somatic</span>
+        <span class="tag" data-type="modality" data-value="psychodrama">psychodrama</span>
+        <span class="tag" data-type="modality" data-value="leadership">leadership</span>
+        <span class="tag" data-type="modality" data-value="executive">executive</span>
+        <span class="tag" data-type="modality" data-value="narrative therapy">narrative therapy</span>
+        <span class="tag" data-type="modality" data-value="group facilitation">group facilitation</span>
+        <span class="tag" data-type="modality" data-value="story coaching">story coaching</span>
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <span class="filter-label">format</span>
+      <div class="tags-row">
+        <span class="tag" data-type="interest" data-value="intensives">intensives</span>
+        <span class="tag" data-type="interest" data-value="in-person">in-person</span>
+        <span class="tag" data-type="interest" data-value="virtual">virtual</span>
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <span class="filter-label">neurodivergence</span>
+      <div class="tags-row">
+        <span class="tag" data-type="interest" data-value="neuro-divergence">neuro-divergence</span>
+        <span class="tag" data-type="interest" data-value="ADHD">ADHD</span>
+        <span class="tag" data-type="interest" data-value="AuDHD">AuDHD</span>
+        <span class="tag" data-type="interest" data-value="Autism">Autism</span>
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <span class="filter-label">life stage & identity</span>
+      <div class="tags-row" id="stageTags">
+        <span class="tag" data-type="interest" data-value="women's">women's</span>
+        <span class="tag" data-type="interest" data-value="men's">men's</span>
+        <span class="tag" data-type="interest" data-value="mom life">mom life</span>
+        <span class="tag" data-type="interest" data-value="fathering">fathering</span>
+        <span class="tag" data-type="interest" data-value="teens">teens</span>
+        <span class="tag" data-type="interest" data-value="family">family</span>
+        <span class="tag" data-type="interest" data-value="couples">couples</span>
+        <span class="tag" data-type="interest" data-value="young adults">young adults</span>
+        <span class="tag" data-type="interest" data-value="midlife">midlife</span>
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <span class="filter-label">world & work</span>
+      <div class="tags-row" id="worldTags">
+        <span class="tag" data-type="interest" data-value="music">music</span>
+        <span class="tag" data-type="interest" data-value="tech">tech</span>
+        <span class="tag" data-type="interest" data-value="creator">creator</span>
+        <span class="tag" data-type="interest" data-value="art">art</span>
+        <span class="tag" data-type="interest" data-value="entrepreneurship">entrepreneurship</span>
+        <span class="tag" data-type="interest" data-value="ministry">ministry</span>
+        <span class="tag" data-type="interest" data-value="nonprofit">nonprofit</span>
+        <span class="tag" data-type="interest" data-value="healthcare">healthcare</span>
+        <span class="tag" data-type="interest" data-value="education">education</span>
+        <span class="tag" data-type="interest" data-value="athlete">athlete</span>
+        <span class="tag" data-type="interest" data-value="career transition">career transition</span>
+      </div>
+    </div>
+
+    <button class="clear-btn" id="clearBtn">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 1L11 11M11 1L1 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      clear all filters
+    </button>
+  </div>
+
+  <div class="results-meta" id="resultsMeta"></div>
+
+  <!-- GRID -->
+  <div class="coach-grid" id="coachGrid"></div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal" id="modal">
+    <button class="modal-close" id="modalClose">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1L13 13M13 1L1 13" stroke="#6b6560" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </button>
+    <div class="modal-hero" id="modalHero"></div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<footer>Orangery.solutions &amp; lil' bird coaching · finding the right person changes everything</footer>
+
+<script>
+// ── CONFIG ──
+// Paste your deployed Apps Script URL here (same URL goes in the intake form)
+const APPS_SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+
+// Placeholder coaches shown while loading or if Sheet isn't connected yet
+const PLACEHOLDER_COACHES = [
+  {
+    id: 'p1',
+    name: "Sarah Okonkwo",
+    title: "Life Coach & Spiritual Director",
+    initials: "SO",
+    modalityTags: ["life coach", "spiritual direction"],
+    interestTags: ["women's", "mom life", "midlife", "ministry"],
+    bio: "Sarah has spent fifteen years walking with women in the middle of it — the big transitions, the quiet losses, the seasons that don't have a name yet. She's warm, perceptive, and will ask the one question you weren't expecting.",
+    approach: "Her sessions blend reflective listening, spiritual practice, and a gentle kind of honesty that helps clients find their own footing. She draws from the Ignatian tradition and narrative coaching.",
+    goodFor: ["Women navigating faith and doubt", "Moms losing themselves in the role", "Midlife reckoning and renewal", "Anyone who needs permission to slow down"],
+    background: "M.Div, certified life coach, 12 years in ministry formation",
+    photoDataUrl: ''
+  },
+  {
+    id: 'p2',
+    name: "Marcus Tetteh",
+    title: "Executive & Leadership Coach",
+    initials: "MT",
+    modalityTags: ["executive", "leadership", "group facilitation"],
+    interestTags: ["tech", "entrepreneurship", "men's", "career transition"],
+    bio: "Marcus is the coach you hire when you're succeeding by every external metric but something still feels off. He works primarily with founders, team leads, and executives in high-growth environments.",
+    approach: "Direct, strategic, and surprisingly good at uncovering emotional intelligence gaps without making it feel like therapy. He uses 5 Voices frameworks and a sharp systems-thinking lens.",
+    goodFor: ["Post-Series A/B founders", "Tech leads becoming people managers", "Men who lead well at work but struggle at home", "Anyone building an organisation and themselves simultaneously"],
+    background: "15 years in organizational development, GiANT Worldwide certified, MBA",
+    photoDataUrl: ''
+  },
+  {
+    id: 'p3',
+    name: "Priya Menon",
+    title: "Somatic Coach & Therapist",
+    initials: "PM",
+    modalityTags: ["somatic", "therapeutic"],
+    interestTags: ["women's", "healthcare", "young adults", "career transition"],
+    bio: "Priya brings the body into the conversation. If you've done the therapy, read the books, and still feel stuck — she works with the part of you that hasn't caught up yet.",
+    approach: "Body-based practices, nervous system regulation, and somatic inquiry. She's particularly gifted at working with people who intellectualise everything (yes, she can tell).",
+    goodFor: ["Burnout and chronic overwhelm", "High-achievers whose body is saying no", "Women in healthcare and helping professions", "People who've tried everything else"],
+    background: "Licensed therapist, somatic experiencing practitioner, 10 years clinical experience",
+    photoDataUrl: ''
+  }
+];
+
+let coaches = [];
+
+let activeFilters = new Set();
+let searchQuery = '';
+
+function renderGrid() {
+  const grid = document.getElementById('coachGrid');
+  const meta = document.getElementById('resultsMeta');
+
+  const filtered = coaches.filter(c => {
+    const allTags = [...c.modalityTags, ...c.interestTags];
+    const matchesFilters = activeFilters.size === 0 || [...activeFilters].every(f => allTags.includes(f));
+    const q = searchQuery.toLowerCase();
+    const matchesSearch = !q || c.name.toLowerCase().includes(q) || c.title.toLowerCase().includes(q) || c.bio.toLowerCase().includes(q) || allTags.some(t => t.includes(q));
+    return matchesFilters && matchesSearch;
+  });
+
+  meta.textContent = filtered.length === coaches.length
+    ? `${coaches.length} guides available`
+    : `${filtered.length} of ${coaches.length} guides`;
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `<div class="empty-state">
+      <p class="big">No guides found</p>
+      <p class="small">Try adjusting your filters or searching something else.</p>
+    </div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(c => `
+    <div class="coach-card" data-id="${c.id}">
+      <div class="photo-wrap">
+        ${c.photoDataUrl
+          ? `<img src="${c.photoDataUrl}" alt="${c.name}" />`
+          : `<div class="photo-placeholder">${c.initials}</div>`}
+      </div>
+      <div class="card-body">
+        <h3>${c.name}</h3>
+        <p class="title">${c.title}</p>
+        <div class="card-tags">
+          ${c.modalityTags.map(t => `<span class="card-tag tag-modality">${t}</span>`).join('')}
+          ${c.interestTags.slice(0,2).map(t => `<span class="card-tag tag-interest">${t}</span>`).join('')}
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  grid.querySelectorAll('.coach-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const coach = coaches.find(c => c.id === parseInt(card.dataset.id));
+      openModal(coach);
+    });
+  });
+}
+
+function openModal(coach) {
+  const hero = document.getElementById('modalHero');
+  const body = document.getElementById('modalBody');
+
+  hero.innerHTML = coach.photoDataUrl
+    ? `<img src="${coach.photoDataUrl}" alt="${coach.name}" style="width:100%;height:100%;object-fit:cover;" />`
+    : `<div class="hero-placeholder">${coach.initials}</div>`;
+
+  body.innerHTML = `
+    <h2>${coach.name}</h2>
+    <p class="modal-title">${coach.title}</p>
+    <div class="modal-tags">
+      ${coach.modalityTags.map(t => `<span class="card-tag tag-modality">${t}</span>`).join('')}
+      ${coach.interestTags.map(t => `<span class="card-tag tag-interest">${t}</span>`).join('')}
+    </div>
+    <div class="modal-section">
+      <h4>who they are</h4>
+      <p>${coach.bio}</p>
+    </div>
+    <hr class="modal-divider">
+    <div class="modal-section">
+      <h4>how they work</h4>
+      <p>${coach.approach}</p>
+    </div>
+    <hr class="modal-divider">
+    <div class="modal-section">
+      <h4>a good fit if...</h4>
+      <ul>${coach.goodFor.map(item => `<li>${item}</li>`).join('')}</ul>
+    </div>
+    <hr class="modal-divider">
+    <div class="modal-section">
+      <h4>background</h4>
+      <p>${coach.background}</p>
+    </div>
+  `;
+
+  document.getElementById('modalBackdrop').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modalBackdrop').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('modalClose').addEventListener('click', closeModal);
+document.getElementById('modalBackdrop').addEventListener('click', e => {
+  if (e.target === document.getElementById('modalBackdrop')) closeModal();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+document.querySelectorAll('.tag').forEach(tag => {
+  tag.addEventListener('click', () => {
+    const val = tag.dataset.value;
+    if (activeFilters.has(val)) {
+      activeFilters.delete(val);
+      tag.classList.remove('active');
+    } else {
+      activeFilters.add(val);
+      tag.classList.add('active');
+    }
+    renderGrid();
+  });
+});
+
+document.getElementById('clearBtn').addEventListener('click', () => {
+  activeFilters.clear();
+  document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
+  document.getElementById('searchInput').value = '';
+  searchQuery = '';
+  renderGrid();
+});
+
+document.getElementById('searchInput').addEventListener('input', e => {
+  searchQuery = e.target.value;
+  renderGrid();
+});
+
+// ── LOAD COACHES ──
+async function loadCoaches() {
+  const grid = document.getElementById('coachGrid');
+  const meta = document.getElementById('resultsMeta');
+
+  // Show placeholders while loading
+  coaches = PLACEHOLDER_COACHES;
+  renderGrid();
+
+  if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') return;
+
+  try {
+    meta.textContent = 'loading guides...';
+    const res = await fetch(APPS_SCRIPT_URL);
+    const live = await res.json();
+    if (Array.isArray(live) && live.length > 0) {
+      coaches = live;
+      renderGrid();
+    }
+  } catch (err) {
+    // Falls back to placeholders silently
+    console.warn('Could not load from Sheet, showing placeholders:', err);
+    renderGrid();
+  }
+}
+
+loadCoaches();
+</script>
+</body>
+</html>
