@@ -386,7 +386,49 @@
   .modal-link { font-size: 0.83rem; color: var(--gold); text-decoration: none; display: flex; align-items: center; gap: 0.3rem; }
   .modal-link:hover { color: var(--ember); }
 
-  /* ── EMPTY STATE ── */
+  /* lil' bird certified badge */
+  .lilbird-badge {
+    position: absolute;
+    top: 0.65rem;
+    right: 0.65rem;
+    width: 34px;
+    height: 34px;
+    background: var(--ink);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    z-index: 3;
+    border: 2px solid var(--gold);
+    cursor: default;
+  }
+  .lilbird-badge svg { width: 18px; height: 18px; }
+  .lilbird-badge:hover::after {
+    content: "lil' bird certified";
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    background: var(--ink);
+    color: var(--gold);
+    font-family: 'Caveat', cursive;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    padding: 0.25rem 0.6rem;
+    border-radius: 8px;
+    pointer-events: none;
+  }
+
+  /* Modal certified line */
+  .modal-certified {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: 'Caveat', cursive;
+    font-size: 1rem;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
   .empty-state {
     text-align: center;
     padding: 4rem 2rem;
@@ -721,6 +763,7 @@ function renderGrid() {
         ${c.photoDataUrl
           ? `<img src="${c.photoDataUrl}" alt="${c.name}" />`
           : `<div class="photo-placeholder">${c.initials}</div>`}
+        ${c.lilbird ? `<div class="lilbird-badge" title="lil' bird certified"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3C9 3 6.5 5 6 7.5C4.5 7.8 3 9 3 11c0 1.5 1 2.8 2.5 3.3C6 16.8 8.8 19 12 19s6-2.2 6.5-4.7C20 13.8 21 12.5 21 11c0-2-1.5-3.2-3-3.5C17.5 5 15 3 12 3z" fill="${'#c4933f'}"/><circle cx="9.5" cy="10.5" r="1" fill="white"/><circle cx="14.5" cy="10.5" r="1" fill="white"/><path d="M10 14c.5.8 1 1 2 1s1.5-.2 2-1" stroke="white" stroke-width="0.8" stroke-linecap="round"/></svg></div>` : ''}
       </div>
       <div class="card-body">
         ${availClass ? `<span class="avail-badge ${availClass}">${c.availability}</span>` : ''}
@@ -754,6 +797,7 @@ function openModal(coach) {
   body.innerHTML = `
     <h2>${coach.name}</h2>
     <p class="modal-title">${coach.title}</p>
+    ${coach.lilbird ? `<div class="modal-certified"><svg viewBox="0 0 24 24" width="16" height="16" fill="none"><path d="M12 3C9 3 6.5 5 6 7.5C4.5 7.8 3 9 3 11c0 1.5 1 2.8 2.5 3.3C6 16.8 8.8 19 12 19s6-2.2 6.5-4.7C20 13.8 21 12.5 21 11c0-2-1.5-3.2-3-3.5C17.5 5 15 3 12 3z" fill="#c4933f"/></svg>lil' bird certified coach</div>` : ''}
     ${coach.location ? `<p style="font-size:0.85rem;color:var(--ink-muted);margin-bottom:0.5rem">${coach.location}${coach.timezone ? ' · ' + coach.timezone : ''}</p>` : ''}
     <div class="modal-tags">
       ${coach.modalityTags.map(t => `<span class="card-tag tag-modality">${t}</span>`).join('')}
