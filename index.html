@@ -1213,11 +1213,11 @@ function openModal(coach) {
       ${coach.experience ? `<p style="margin-top:0.4rem;font-size:0.85rem;color:var(--ink-muted)">${coach.experience} experience${coach.pricing && coach.pricing !== 'Prefer not to say' ? ' · ' + coach.pricing : ''}</p>` : ''}
       ${coach.languages ? `<p style="margin-top:0.4rem;font-size:0.85rem;color:var(--ink-muted)">Languages: ${coach.languages}</p>` : ''}
     </div>
-    ${coach.bookingLink ? `<a href="${coach.bookingLink}" target="_blank" class="modal-book-btn">Book a session &rarr;</a>` : ''}
+    ${coach.bookingLink ? `<a href="${coach.bookingLink.startsWith('http') ? coach.bookingLink : 'https://' + coach.bookingLink}" target="_blank" class="modal-book-btn">Book a session &rarr;</a>` : ''}
     <div class="modal-links">
-      ${coach.website ? `<a href="${coach.website}" target="_blank" class="modal-link">website &rarr;</a>` : ''}
-      ${coach.linkedin ? `<a href="${coach.linkedin}" target="_blank" class="modal-link">LinkedIn &rarr;</a>` : ''}
-      ${coach.instagram ? `<a href="${coach.instagram}" target="_blank" class="modal-link">Instagram &rarr;</a>` : ''}
+      ${coach.website ? `<a href="${coach.website.startsWith('http') ? coach.website : 'https://' + coach.website}" target="_blank" class="modal-link">website &rarr;</a>` : ''}
+      ${coach.linkedin ? `<a href="${coach.linkedin.startsWith('http') ? coach.linkedin : 'https://' + coach.linkedin}" target="_blank" class="modal-link">LinkedIn &rarr;</a>` : ''}
+      ${coach.instagram ? `<a href="${coach.instagram.startsWith('http') ? coach.instagram : 'https://' + coach.instagram}" target="_blank" class="modal-link">Instagram &rarr;</a>` : ''}
     </div>
   `;
 
@@ -1470,7 +1470,7 @@ Here are the coaches currently in the network:
 ${coachContext || 'No coaches loaded yet — respond warmly and say the network is being built.'}`;
 
   try {
-    const response = await fetch('https://coachesandguides.cwwq46sn7m.workers.dev', {
+    const response = await fetch('YOUR_CLOUDFLARE_WORKER_URL', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
