@@ -1011,20 +1011,23 @@
       <div class="tags-row">
         <span class="tag" data-type="interest" data-value="women's">women's</span>
         <span class="tag" data-type="interest" data-value="men's">men's</span>
-        <span class="tag" data-type="interest" data-value="mom life">mom life</span>
-        <span class="tag" data-type="interest" data-value="fathering">fathering</span>
         <span class="tag" data-type="interest" data-value="teens">teens</span>
         <span class="tag" data-type="interest" data-value="young adults">young adults</span>
         <span class="tag" data-type="interest" data-value="midlife">midlife</span>
         <span class="tag" data-type="interest" data-value="entrepreneurs">entrepreneurs</span>
         <span class="tag" data-type="interest" data-value="creatives">creatives</span>
+        <span class="tag" data-type="interest" data-value="people of faith">people of faith</span>
+        <span class="tag" data-type="interest" data-value="ADHD">ADHD</span>
+        <span class="tag" data-type="interest" data-value="AuDHD">AuDHD</span>
+        <span class="tag" data-type="interest" data-value="Autism">Autism</span>
       </div>
       <div class="tags-row more-tags" id="moreForTags" style="display:none;margin-top:0.5rem;">
+        <span class="tag" data-type="interest" data-value="mom life">mom life</span>
+        <span class="tag" data-type="interest" data-value="fathering">fathering</span>
         <span class="tag" data-type="interest" data-value="couples">couples</span>
         <span class="tag" data-type="interest" data-value="family">family</span>
         <span class="tag" data-type="interest" data-value="seniors">seniors</span>
         <span class="tag" data-type="interest" data-value="LGBTQ+">LGBTQ+</span>
-        <span class="tag" data-type="interest" data-value="people of faith">people of faith</span>
         <span class="tag" data-type="interest" data-value="founders">founders</span>
         <span class="tag" data-type="interest" data-value="athletes">athletes</span>
         <span class="tag" data-type="interest" data-value="educators">educators</span>
@@ -1033,9 +1036,6 @@
         <span class="tag" data-type="interest" data-value="ministry">ministry</span>
         <span class="tag" data-type="interest" data-value="expats">expats</span>
         <span class="tag" data-type="interest" data-value="first-gen professionals">first-gen professionals</span>
-        <span class="tag" data-type="interest" data-value="ADHD">ADHD</span>
-        <span class="tag" data-type="interest" data-value="AuDHD">AuDHD</span>
-        <span class="tag" data-type="interest" data-value="Autism">Autism</span>
         <span class="tag" data-type="interest" data-value="music">music</span>
         <span class="tag" data-type="interest" data-value="tech">tech</span>
         <span class="tag" data-type="interest" data-value="art">art</span>
@@ -1248,23 +1248,26 @@ document.getElementById('moreFiltersBtn').addEventListener('click', () => {
 
 // ── FUZZY SEARCH SUGGESTIONS ──
 const fuzzyMap = [
-  { terms: ['church hurt', 'religious trauma', 'church trauma', 'religion'], suggest: 'faith transition' },
-  { terms: ['exhausted', 'burnt out', 'exhaustion', 'overwhelmed', 'overworked'], suggest: 'burnout' },
-  { terms: ['stuck', 'lost', 'purpose', 'meaning', 'why am i'], suggest: 'purpose' },
-  { terms: ['anxiety', 'stress', 'mental health'], suggest: 'mindset' },
-  { terms: ['marriage', 'divorce', 'partner', 'spouse'], suggest: 'relationships' },
-  { terms: ['christian', 'faith', 'god', 'spiritual'], suggest: 'spiritual' },
-  { terms: ['entrepreneur', 'startup', 'founder', 'business owner'], suggest: 'entrepreneurs' },
-  { terms: ['writer', 'author', 'book', 'storytelling'], suggest: 'writing' },
-  { terms: ['artist', 'creative', 'musician', 'maker'], suggest: 'creatives' },
-  { terms: ['adhd', 'add', 'attention', 'focus'], suggest: 'ADHD' },
-  { terms: ['autism', 'autistic', 'neurodivergent', 'audhd'], suggest: 'AuDHD' },
-  { terms: ['grief', 'loss', 'bereavement', 'death'], suggest: 'grief' },
-  { terms: ['teen', 'teenager', 'adolescent', 'young person'], suggest: 'teens' },
-  { terms: ['midlife', 'mid life', '40s', '50s', 'getting older'], suggest: 'midlife' },
-  { terms: ['dad', 'father', 'fatherhood'], suggest: 'fathering' },
-  { terms: ['mom', 'mother', 'motherhood', 'mum'], suggest: 'mom life' },
-  { terms: ['identity', 'who am i', 'self', 'figuring out'], suggest: 'identity' },
+  { terms: ['church', 'religious', 'religion', 'deconstruct', 'hurt', 'faith hurt'], suggest: 'faith transition' },
+  { terms: ['burnt', 'burnout', 'burn out', 'exhaust', 'overwhelm', 'overwork', 'tired'], suggest: 'burnout' },
+  { terms: ['stuck', 'lost', 'directionless', 'meaning', 'why am i', 'purpose'], suggest: 'purpose' },
+  { terms: ['anxious', 'anxiety', 'stress', 'mental', 'mindset', 'overthink'], suggest: 'mindset' },
+  { terms: ['marriage', 'divorce', 'partner', 'spouse', 'relationship', 'dating'], suggest: 'relationships' },
+  { terms: ['christian', 'faith', 'god', 'spiritual', 'prayer', 'belief'], suggest: 'spiritual' },
+  { terms: ['entrepreneur', 'startup', 'founder', 'business owner', 'self employ'], suggest: 'entrepreneurs' },
+  { terms: ['writer', 'author', 'book', 'writing', 'storytell'], suggest: 'writing' },
+  { terms: ['artist', 'creative', 'musician', 'maker', 'design'], suggest: 'creatives' },
+  { terms: ['adhd', 'add', 'attention', 'focus', 'hyperact', 'distract'], suggest: 'ADHD' },
+  { terms: ['autism', 'autistic', 'neurodiverg', 'audhd', 'sensory'], suggest: 'AuDHD' },
+  { terms: ['grief', 'loss', 'bereave', 'death', 'mourn'], suggest: 'grief' },
+  { terms: ['teen', 'teenager', 'adolescent', 'young person', 'kid', 'child'], suggest: 'teens' },
+  { terms: ['midlife', 'mid life', '40s', '50s', 'older', 'aging', 'retire'], suggest: 'midlife' },
+  { terms: ['dad', 'father', 'fatherhood', 'parenting', 'parent'], suggest: 'fathering' },
+  { terms: ['mom', 'mother', 'motherhood', 'mum', 'mummy'], suggest: 'mom life' },
+  { terms: ['identity', 'who am i', 'self', 'figuring out', 'who i am'], suggest: 'identity' },
+  { terms: ['career', 'job', 'work', 'profession', 'employ', 'resign', 'quit', 'fired'], suggest: 'career' },
+  { terms: ['leader', 'leadership', 'manage', 'team', 'boss'], suggest: 'leadership' },
+  { terms: ['executive', 'ceo', 'director', 'senior'], suggest: 'executive' },
 ];
 
 document.getElementById('searchInput').addEventListener('input', e => {
@@ -1272,11 +1275,11 @@ document.getElementById('searchInput').addEventListener('input', e => {
   const q = searchQuery.toLowerCase().trim();
   const suggestionEl = document.getElementById('searchSuggestion');
 
-  if (q.length > 2) {
-    const match = fuzzyMap.find(f => f.terms.some(t => q.includes(t)));
+  if (q.length > 1) {
+    const match = fuzzyMap.find(f => f.terms.some(t => q.includes(t) || t.includes(q)));
     if (match) {
       suggestionEl.style.display = 'block';
-      suggestionEl.innerHTML = `did you mean <span style="color:var(--gold);cursor:pointer;text-decoration:underline;" onclick="applyFuzzySuggestion('${match.suggest}')">${match.suggest}</span>?`;
+      suggestionEl.innerHTML = 'try the <span style="color:var(--gold);cursor:pointer;text-decoration:underline;font-weight:500;" onclick="applyFuzzySuggestion(\'' + match.suggest + '\')">' + match.suggest + '</span> filter';
     } else {
       suggestionEl.style.display = 'none';
     }
@@ -1467,7 +1470,7 @@ Here are the coaches currently in the network:
 ${coachContext || 'No coaches loaded yet — respond warmly and say the network is being built.'}`;
 
   try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    const response = await fetch('YOUR_CLOUDFLARE_WORKER_URL', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
