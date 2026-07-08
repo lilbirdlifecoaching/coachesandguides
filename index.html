@@ -1541,7 +1541,7 @@ ${coachContext || 'No coaches loaded yet — respond warmly and say the network 
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'claude-sonnet-4-6',
         max_tokens: 1000,
         system: systemPrompt,
         messages: conciergeHistory.slice(-10)
